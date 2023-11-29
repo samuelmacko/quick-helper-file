@@ -36,14 +36,10 @@ function M.setup(opts)
   opts = opts or {}
 
   if opts.file_name then
-    if not opts.relative then
-      M.cfg.file_path = opts.file_name
-    else
       M.cfg.file_path = full_path(opts.file_name)
-    end
   else
     -- default file path
-    M.cfg.file_path = full_path(".search_filters")
+    M.cfg.file_path = full_path(".helper_file")
   end
 end
 
@@ -89,13 +85,14 @@ end
 function M._load_lines()
   if not file_exists(M.cfg.file_path) then
     M._lines = {}
+    return
   end
 
   local lines = {}
   for line in io.lines(M.cfg.file_path) do
     -- ignores commented out or empty lines
     -- comment is prefixed with '--'
-    if line:sub(2, 2) ~= "--" or line ~= "" then
+    if line:sub(2, 2) ~= "--" and line ~= "" then
       lines[#lines + 1] = line
     end
   end
@@ -119,8 +116,8 @@ function M.read_lines()
   return M._lines
 end
 
--- creates a patterns file if it doesn't exist and opens an editing window
-M.search_filter_set = function()
+-- creates a helper file if it doesn't exist and opens an editing window
+function M.helper_file_edit()
 
   -- load lines if needed
   if not M._lines then M._load_lines() end
