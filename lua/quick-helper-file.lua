@@ -23,10 +23,10 @@ local function create_file(file_name)
   end
 end
 
--- returns full file path to the project root
-local function full_path(file_name)
-  return io.popen"pwd":read'*l' .. "/" .. file_name
-end
+-- -- returns full file path to the project root
+-- local function full_path(file_name)
+--   return io.popen"pwd":read'*l' .. "/" .. file_name
+-- end
 
 local M = {}
 
@@ -35,12 +35,15 @@ M.cfg = {}
 function M.setup(opts)
   opts = opts or {}
 
-  if opts.file_name then
-      M.cfg.file_path = full_path(opts.file_name)
-  else
-    -- default file path
-    M.cfg.file_path = full_path(".helper_file")
-  end
+  -- TODO: add settings for custom dir and name file
+  -- if opts.file_name then
+  --     M.cfg.file_path = full_path(opts.file_name)
+  -- else
+  --   -- default file path
+  --   M.cfg.file_path = full_path(".helper_file")
+  -- end
+
+  M.cfg.file_path = vim.fn.stdpath("data") .. "/filters/" .. vim.fn.getcwd():gsub("/", "%%")
 end
 
 -- shows editable window to edit the content of the helper file
